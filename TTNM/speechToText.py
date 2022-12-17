@@ -1,10 +1,33 @@
 import speech_recognition as sr
-from googletrans import Translator
+
 
 r = sr.Recognizer()
-with sr.Microphone() as source:
-    audio_data = r. record(source, duration=5, offset=0.5 )
-    print("Recognizing...")
-    text =  r.recognize_google(audio_data, language='vi-VN')
-    print(text)
-ts = Translator()
+mic = sr.Microphone()
+# ham nhận diện giọng nói chuyển thành text
+# hàm trả về 1 dic trong đó key 'transcription' là text, 'error' là None nếu chuyển được giọng nói thành text
+def recognize_speech_to_text(mic, r):
+    with mic as source:
+        # r.adjust_for_ambient_noise(source)
+        audio_data = r. record(source, duration=5, offset=0.5 )
+        print("Recognizing...")
+    response = {
+        'success' : True,
+        'error' : None,
+        'transcription' : None
+    }
+    try:
+        response['transcription'] = r.recognize_google(audio_data, language= 'vi-VN')
+    except sr.RequestError:
+        response['success'] = False
+        response['error'] = 'Api was unavailable'
+    except sr.UnknownValueError:
+        response['error'] = 'Unable to recognize'
+    return response
+
+
+
+example = recognize_speech_to_text(mic, r)
+if example['success']:
+    print(example['transcription'])
+else:
+    print(example['error'])
