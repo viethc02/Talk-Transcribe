@@ -27,7 +27,13 @@ def recognize_speech_to_text(mic, r):
 
 
 example = recognize_speech_to_text(mic, r)
-if example['success']:
-    print(example['transcription'])
+if not example['error']:
+    text = example['transcription']
+    text = text.lower()
+    print(text)
+    if('có' in text):
+        print('Yes')
+    if 'không' in text:
+        print('No')
 else:
     print(example['error'])
