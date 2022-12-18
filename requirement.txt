@@ -1,0 +1,8 @@
+playsound 1.2.2
+gTTs
+speech_recognition, pyaudio
+keras, tensorflow
+mediapipe
+opencv
+tkinter
+pygame
