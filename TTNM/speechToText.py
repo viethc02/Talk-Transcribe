@@ -1,5 +1,8 @@
 import speech_recognition as sr
 
+import GUI2
+from Translator import cam
+from GUI2 import *
 
 r = sr.Recognizer()
 mic = sr.Microphone()
@@ -7,8 +10,8 @@ mic = sr.Microphone()
 # hàm trả về 1 dic trong đó key 'transcription' là text, 'error' là None nếu chuyển được giọng nói thành text
 def recognize_speech_to_text(mic, r):
     with mic as source:
-        # r.adjust_for_ambient_noise(source)
-        audio_data = r. record(source, duration=5, offset=0.5 )
+        r.adjust_for_ambient_noise(source)
+        audio_data = r. record(source, duration=5, offset=0.5)
         print("Recognizing...")
     response = {
         'success' : True,
@@ -24,16 +27,17 @@ def recognize_speech_to_text(mic, r):
         response['error'] = 'Unable to recognize'
     return response
 
-
-
-example = recognize_speech_to_text(mic, r)
-if not example['error']:
-    text = example['transcription']
-    text = text.lower()
-    print(text)
-    if('có' in text):
-        print('Yes')
-    if 'không' in text:
-        print('No')
-else:
-    print(example['error'])
+def magic():
+    example = recognize_speech_to_text(mic, r)
+    if not example['error']:
+        text = example['transcription']
+        text = text.lower()
+        print(text)
+        if('có' in text):
+            #print('Yes')
+            cam()
+        if 'không' in text:
+            print('No')
+            #open()
+    else:
+        print(example['error'])

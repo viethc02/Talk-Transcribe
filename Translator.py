@@ -190,8 +190,8 @@ def cam():
                 # image = prob_viz(res, actions, image, colors)
         
             cv2.rectangle(image, (0,0), (640, 40), (245, 117, 16), -1)
-            print(keypoints)
-            print(len(sequence))
+            #print(keypoints)
+            #print(len(sequence))
             if len(sentence) > 0:
                 cv2.putText(image, remove_accent(sentence[0]), (3,30),
                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)

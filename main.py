@@ -1,31 +1,58 @@
+import time
 import tkinter
+import pygame
+import keyboard
 
+import TTNM.speechToText
 from GUI1 import *
-
+from GUI2 import *
 from tkVideoPlayer import TkinterVideo
+from playsound import playsound
 
-if __name__ == '__main__':
-    root = tkinter.Tk()
-    root.title("Talk Transcribe")
+root = tkinter.Tk()
+root.title("Talk Transcribe")
 
-    canvas = Canvas(root, width=640, height=360)
-    canvas.pack(fill="both", expand=True)
+def playSound():
+    sound = 'question.mp3'
+    pygame.init()
+    pygame.mixer.music.load(sound)
+    pygame.mixer.music.play(loops=0)
+    time.sleep(0)
 
+def playVideo():
     videoplayer = TkinterVideo(master=root, scaled=True)
     videoplayer.place(x=200, y=100)
     videoplayer.load(r"Video/seeme.mp4")
     videoplayer.set_resampling_method(1)
     videoplayer.play()
 
-    playIcon = PhotoImage(file="Icon/play.png")
-    #Button(root, image=playIcon, command=lambda: videoplayer.play()).place(x=100, y=100)
+def replay():
+    playSound()
+    playVideo()
+
+if __name__ == '__main__':
+    # root = tkinter.Tk()
+    # root.title("Talk Transcribe")
+
+    canvas = Canvas(root, width=640, height=360)
+    canvas.pack(fill="both", expand=True)
+
+    playSound()
+    playVideo()
 
     text = Text(root, wrap=WORD, height=1, width=22, font="ARIAL", bg="#000000", fg="white")
     text.place(x=150, y=250)
     text.insert(INSERT, "Bạn có nhìn thấy tôi không?")
 
+    playIcon = PhotoImage(file="Icon/play.png")
+    Button(root, image=playIcon, command=lambda : replay()).place(x=100, y=100)
+
     catIcon = PhotoImage(file="Icon/cat.png")
-    Button(root, image=catIcon, command=lambda: videoplayer.play()).place(x=30, y=225)
+    #catButton = tkinter.Button(root, image=catIcon, command=lambda : TTNM.speechToText.magic()).invoke()
+    #tkinter.Button(catButton).invoke()
+    Button(root, image=catIcon).place(x=30, y=225)
+
+    keyboard.add_hotkey("Z", lambda : TTNM.speechToText.magic())
 
     upIcon = PhotoImage(file="Icon/volume_up.png")
     Button(root, image=upIcon).place(x=400, y=75)
@@ -36,4 +63,13 @@ if __name__ == '__main__':
     img = PhotoImage(file="Icon/cute.png")
     canvas.create_image(0, 0, image=img, anchor="nw")
 
-    App(root)
+    yesIcon = PhotoImage(file="Icon/yes.png")
+    Button(root, image=yesIcon, command=lambda: cam()).pack(padx=15, pady=10, side=tk.LEFT)
+
+    noIcon = PhotoImage(file="Icon/no.png")
+    Button(root, image=noIcon, command=lambda : open(root)).pack(padx=15, pady=10, side=tk.RIGHT)
+
+    root.eval('tk::PlaceWindow . center')
+    root.mainloop()
+
+    #App(root)
